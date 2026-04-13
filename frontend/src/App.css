@@ -948,26 +948,6 @@ select {
     gap: 0.5rem;
   }
 }
-  text-decoration: none;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
-}
-
-.button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 40px rgba(45, 108, 223, 0.15);
-}
-
-.button-primary {
-  background: var(--primary);
-  color: #fff;
-}
-
-.button-secondary {
-  background: rgba(45, 108, 223, 0.08);
-  color: var(--primary-dark);
-}
-
-.theme-toggle,
 .btn-link {
   font: inherit;
   border: 1px solid transparent;
