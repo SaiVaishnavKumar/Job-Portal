@@ -16,6 +16,11 @@ const Header = () => {
         <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
           Home
         </NavLink>
+        {isAuthenticated && (
+          <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Dashboard
+          </NavLink>
+        )}
         {isAuthenticated ? (
           <>
             <NavLink to="/jobs" className={({ isActive }) => (isActive ? 'active' : '')}>

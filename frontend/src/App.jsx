@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 import MyApplications from "./pages/MyApplications";
 import PostJob from "./pages/PostJob";
 import Applicants from "./pages/Applicants";
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                 <Route path="/jobs" element={<PrivateRoute><Jobs /></PrivateRoute>} />
                 <Route path="/applications" element={<PrivateRoute><MyApplications /></PrivateRoute>} />
                 <Route path="/post-job" element={<PrivateRoute><PostJob /></PrivateRoute>} />

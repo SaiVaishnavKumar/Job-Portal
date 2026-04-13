@@ -1,38 +1,43 @@
-<<<<<<< HEAD
-# Job Portal (Basic Version)
+# Job Portal
 
-A full MERN stack job portal application with authentication, job posting, applications, search/filter, and responsive UI.
+A modern MERN job portal application with authentication, user roles, seeded sample data, and a professional dashboard.
 
-## Features
+## What’s included
 
-- User registration and login with JWT authentication
-- Role support: `user` and `employer`
-- CRUD operations for jobs
-- Apply for jobs and manage applications
-- Search and filter job listings
-- Protected routes and role-based access control
-- Express backend with MongoDB
-- React frontend with routing and context
+- React frontend with dark/light mode and responsive UI
+- Express backend with MongoDB authentication and role-based access
+- Employer workflow: post jobs, review applicants, manage applications
+- Job seeker workflow: search jobs, apply, and track application status
+- Seed script for real sample users, jobs, and applications
+- Vercel-ready frontend deployment configuration
 
-## Folder structure
+## Project structure
 
-- `backend/` - Node.js + Express API
-- `frontend/` - React application (Vite)
+- `backend/` - Node.js API server
+- `frontend/` - React + Vite frontend app
+- `vercel.json` - Vercel deployment configuration for the frontend
 
-## Setup
+## Quick setup
 
-1. Copy `.env.example` to `.env` in `backend/` and configure the values.
-2. Install backend dependencies:
+1. Install dependencies:
    ```bash
    cd backend
    npm install
-   ```
-3. Install frontend dependencies:
-   ```bash
    cd ../frontend
    npm install
    ```
-4. Start backend and frontend in separate terminals:
+2. Configure backend environment:
+   ```bash
+   cd backend
+   cp .env.example .env
+   ```
+   Make sure `.env` contains your MongoDB URI, JWT secret, and `PORT=7000`.
+3. Seed sample data:
+   ```bash
+   cd backend
+   npm run seed
+   ```
+4. Start both servers in separate terminals:
    ```bash
    cd backend
    npm run dev
@@ -42,23 +47,58 @@ A full MERN stack job portal application with authentication, job posting, appli
    npm run dev
    ```
 
-## API Endpoints
+## Seed data
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `GET /api/jobs`
-- `POST /api/jobs`
-- `PUT /api/jobs/:id`
-- `DELETE /api/jobs/:id`
-- `POST /api/applications/:jobId`
-- `GET /api/applications`
-- `PUT /api/applications/:id`
+Run `npm run seed` inside `backend/` to create:
 
-## Notes
+- job seeker account: `alex@jobportal.com` / `Password123!`
+- employer accounts: `taylor@startupx.com`, `jordan@recruitco.com`
+- admin account: `admin@jobportal.com`
+- sample jobs and applications
 
-- Use MongoDB Atlas or a local `mongodb://localhost:27017/job-portal` URI.
-- The frontend calls the API using `VITE_API_URL`.
-=======
-# Job-Portal
-A full-stack MERN Job Portal application with authentication, job management, and application tracking features.
->>>>>>> 52919f3034d46efc98b237a1a0c41925502176f3
+## GitHub workflow (main branch only)
+
+If you want changes to apply directly and stay simple:
+
+1. Edit your code.
+2. Save the file.
+3. Commit on `main`:
+   ```bash
+   git add .
+   git commit -m "Describe what you changed"
+   git push origin main
+   ```
+
+That is the normal workflow. There is no need to create branches unless you want a separate feature copy.
+
+## Vercel deployment guide
+
+You can deploy the frontend from GitHub using Vercel:
+
+1. Sign in at https://vercel.com and choose "Import Project".
+2. Select your GitHub repository `Job-Portal`.
+3. In Vercel project settings, confirm the root path is the repository root.
+4. Vercel will detect the frontend and use `frontend/package.json` because of `vercel.json`.
+5. Deploy the project.
+
+### If you want automatic deployment
+
+- Connect GitHub to Vercel.
+- Use the `main` branch.
+- Every commit pushed to `main` will trigger a new Vercel deployment.
+
+## How the frontend talks to the backend
+
+- Frontend uses `VITE_API_URL` from `frontend/.env`
+- Backend runs on port `7000`
+- The API base URL is `http://localhost:7000/api`
+
+## Running the frontend build locally
+
+From the `frontend/` folder:
+
+```bash
+npm run build
+```
+
+If the build succeeds, the app is ready for production deployment.
