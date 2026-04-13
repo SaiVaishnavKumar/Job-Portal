@@ -1,33 +1,56 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <header className="header">
       <div className="brand">
-        <Link to="/">Job Portal</Link>
+        <NavLink to="/">Job Portal</NavLink>
       </div>
       <nav className="nav-links">
-        <Link to="/">Home</Link>
+        <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+          Home
+        </NavLink>
         {isAuthenticated ? (
           <>
-            <Link to="/jobs">Jobs</Link>
-            <Link to="/applications">My Applications</Link>
-            {user?.role === 'employer' && <Link to="/post-job">Post Job</Link>}
-            {user?.role === 'employer' && <Link to="/applicants">Applicants</Link>}
+            <NavLink to="/jobs" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Jobs
+            </NavLink>
+            <NavLink to="/applications" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Applications
+            </NavLink>
+            {user?.role === 'employer' && (
+              <NavLink to="/post-job" className={({ isActive }) => (isActive ? 'active' : '')}>
+                Post Job
+              </NavLink>
+            )}
+            {user?.role === 'employer' && (
+              <NavLink to="/applicants" className={({ isActive }) => (isActive ? 'active' : '')}>
+                Applicants
+              </NavLink>
+            )}
             <button className="btn-link" onClick={logout}>
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
+            <NavLink to="/login" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Login
+            </NavLink>
+            <NavLink to="/register" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Register
+            </NavLink>
           </>
         )}
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+        </button>
       </nav>
     </header>
   );

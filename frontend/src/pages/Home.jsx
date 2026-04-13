@@ -2,6 +2,13 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 
+const featuredEmployers = [
+  { name: 'CyberTech Labs', logo: 'https://logo.clearbit.com/cybertechlabs.com' },
+  { name: 'Elevate Systems', logo: 'https://logo.clearbit.com/elevatesystems.com' },
+  { name: 'Neon Finance', logo: 'https://logo.clearbit.com/neonfinance.com' },
+  { name: 'Quantum Media', logo: 'https://logo.clearbit.com/quantummedia.com' },
+];
+
 const Home = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
 
@@ -12,8 +19,8 @@ const Home = () => {
           <p className="eyebrow">Trusted job marketplace</p>
           <h1>Build your career, grow your company.</h1>
           <p className="hero-text">
-            Job Portal helps candidates find meaningful work and employers hire fast with organized listings,
-            powerful filters, and applicant tracking.
+            Job Portal connects talent with fast-growing teams through powerful search, trusted job listings, and
+            clear hiring workflows.
           </p>
           <div className="hero-cta">
             {isAuthenticated ? (
@@ -32,60 +39,81 @@ const Home = () => {
             )}
           </div>
         </div>
-        <div className="hero-card">
-          <div className="hero-card-header">
-            <span>Fast matching</span>
-            <strong>Find top roles and quality applicants in minutes.</strong>
+        <div className="hero-visual">
+          <div className="hero-card">
+            <div className="hero-card-header">
+              <span>Fast matching</span>
+              <strong>Find top roles and quality applicants in minutes.</strong>
+            </div>
+            <div className="hero-card-body">
+              <div className="stat">
+                <span>Active jobs</span>
+                <strong>1.5K+</strong>
+              </div>
+              <div className="stat">
+                <span>Top companies</span>
+                <strong>230+</strong>
+              </div>
+              <div className="stat">
+                <span>Trusted hirers</span>
+                <strong>90%</strong>
+              </div>
+            </div>
           </div>
-          <div className="hero-card-body">
-            <div className="stat">
-              <span>Search by title</span>
-              <strong>1000+</strong>
-            </div>
-            <div className="stat">
-              <span>Company filters</span>
-              <strong>50+</strong>
-            </div>
-            <div className="stat">
-              <span>Trusted by teams</span>
-              <strong>200+</strong>
+          <div className="hero-illustration">
+            <div className="illustration-card">
+              <p className="illustration-label">Featured role</p>
+              <h3>Senior Product Designer</h3>
+              <p>Remote · Full-time · $110k–$135k</p>
             </div>
           </div>
         </div>
       </div>
 
+      <div className="trusted-section">
+        <p className="eyebrow">Featured companies</p>
+        <div className="trusted-grid">
+          {featuredEmployers.map((company) => (
+            <div key={company.name} className="trusted-logo-card">
+              <img src={company.logo} alt={company.name} />
+              <span>{company.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="feature-grid">
         <article className="feature-card">
-          <h2>Search & apply with confidence</h2>
-          <p>Discover jobs with rich descriptions, company details, and easy one-click applications.</p>
+          <h2>Smart search</h2>
+          <p>Search roles by title, company, or keyword, then filter by company and recent postings.</p>
         </article>
         <article className="feature-card">
-          <h2>Employer hiring dashboard</h2>
-          <p>Post jobs, review applicants, and update application status from one clean dashboard.</p>
+          <h2>Employer tools</h2>
+          <p>Post jobs quickly and manage applicants in a secure, organized workflow.</p>
         </article>
         <article className="feature-card">
-          <h2>Secure user accounts</h2>
-          <p>Sign up as a job seeker or employer and keep your profile and activity safe.</p>
+          <h2>Secure profiles</h2>
+          <p>Keep account information safe with token-based authentication and session persistence.</p>
         </article>
       </div>
 
       <div className="how-it-works">
         <div>
           <h2>How it works</h2>
-          <p>Start hiring or apply faster with workflows built for busy teams and career changers.</p>
+          <p>Whether you are hiring or applying, the portal keeps your workflow clear and productive.</p>
         </div>
         <div className="steps-grid">
           <div className="step-card">
-            <strong>1. Create an account</strong>
-            <p>Choose job seeker or employer, then complete your profile with one account.</p>
+            <strong>1. Create your account</strong>
+            <p>Pick job seeker or employer, then get verified and ready in minutes.</p>
           </div>
           <div className="step-card">
-            <strong>2. Find the right match</strong>
-            <p>Use smart search and company filters to narrow searches instantly.</p>
+            <strong>2. Explore curated roles</strong>
+            <p>View job details, company notes, and hiring manager info at a glance.</p>
           </div>
           <div className="step-card">
-            <strong>3. Track applications</strong>
-            <p>Manage applications, review status updates, and keep the hiring process moving.</p>
+            <strong>3. Track every application</strong>
+            <p>See updates, review status changes, and keep your hiring pipeline moving.</p>
           </div>
         </div>
       </div>

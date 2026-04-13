@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import { login } from '../services/authService';
 
@@ -7,35 +7,43 @@ const Login = () => {
   const { login: loginUser } = useContext(AuthContext);
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     try {
       const data = await login(form);
       loginUser(data);
-      navigate('/jobs');
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Unable to sign in. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className="auth-page">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit} className="auth-form">
-        <label>Email</label>
-        <input type="email" name="email" value={form.email} onChange={handleChange} required />
-        <label>Password</label>
-        <input type="password" name="password" value={form.password} onChange={handleChange} required />
-        {error && <div className="error-box">{error}</div>}
-        <button type="submit">Login</button>
-        <p>
-          Don&apos;t have an account? <Link to="/register">Register</Link>
-        </p>
-      </form>
+      <div className="form-panel">
+        <h1>Sign in to your account</h1>
+        <p className="subtitle">Access job listings, apply instantly, and manage your applications.</p>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label>Email address</label>
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+          <label>Password</label>
+          <input type="password" name="password" value={form.password} onChange={handleChange} required />
+          {error && <div className="error-box">{error}</div>}
+          <button type="submit" disabled={loading} className="button button-primary">
+            {loading ? 'Signing in...' : 'Login'}
+          </button>
+          <p className="account-copy">
+            New to Job Portal? <Link to="/register">Create an account</Link>
+          </p>
+        </form>
+      </div>
     </section>
   );
 };
