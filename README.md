@@ -71,6 +71,44 @@ If you want changes to apply directly and stay simple:
 
 That is the normal workflow. There is no need to create branches unless you want a separate feature copy.
 
+## Backend deployment (required for frontend to work)
+
+The frontend needs a deployed backend API. Deploy the backend first:
+
+### Option 1: Railway (recommended)
+
+1. Sign up at https://railway.app
+2. Connect your GitHub repo
+3. Select the `backend/` folder as the root directory
+4. Add environment variables:
+   - `MONGO_URI` - your MongoDB connection string
+   - `JWT_SECRET` - a secure random string
+   - `NODE_ENV` - `production`
+5. Deploy and get the API URL (e.g., `https://job-portal-backend.up.railway.app`)
+
+### Option 2: Render
+
+1. Sign up at https://render.com
+2. Create a new Web Service
+3. Connect your GitHub repo and set root directory to `backend/`
+4. Add environment variables as above
+5. Deploy and get the API URL
+
+### Option 3: Vercel (for API)
+
+1. In Vercel, create a new project
+2. Set root directory to `backend/`
+3. Add environment variables
+4. Deploy and get the API URL
+
+### Update frontend API URL
+
+After deploying the backend:
+
+1. In `vercel.json`, replace `"https://your-backend-url.vercel.app/api"` with your actual backend URL
+2. Commit and push the change
+3. Vercel will redeploy the frontend with the correct API URL
+
 ## Vercel deployment guide
 
 You can deploy the frontend from GitHub using Vercel:
