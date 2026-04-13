@@ -19,17 +19,61 @@ const createJob = asyncHandler(async (req, res) => {
 });
 
 const getJobs = asyncHandler(async (req, res) => {
-  const { search, company, postedBy } = req.query;
+  const { search, location, category, type, experience } = req.query;
   const query = {};
 
   if (search) {
     query.$or = [
       { title: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'i' } },
+      { company: { $regex: search, $options: 'i' } },
+      { skills: { $in: [new RegExp(search, 'i')] } },
     ];
   }
-  if (company) query.company = { $regex: company, $options: 'i' };
-  if (postedBy) query.postedBy = postedBy;
+
+  if (location) {
+    query.location = { $regex: location, $options: 'i' };
+  }
+
+  if (category) {
+    // Map category names to job titles or skills
+    const categoryMappings = {
+      'IT & Software': ['Software', 'Developer', 'Engineer', 'IT', 'Programming', 'Tech'],
+      'Marketing': ['Marketing', 'Digital Marketing', 'SEO', 'Content', 'Social Media'],
+      'Finance': ['Finance', 'Accounting', 'Financial', 'Banking', 'Investment'],
+      'Operations': ['Operations', 'Operations Manager', 'Process', 'Efficiency'],
+      'Sales': ['Sales', 'Business Development', 'Account Manager'],
+      'HR': ['HR', 'Human Resources', 'Recruitment', 'Talent'],
+      'Design': ['Design', 'UI/UX', 'Graphic', 'Creative'],
+      'Content Writing': ['Content', 'Writing', 'Copywriting', 'Editor'],
+    };
+
+    if (categoryMappings[category]) {
+      query.$or = query.$or || [];
+      query.$or.push(
+        { title: { $regex: categoryMappings[category].join('|'), $options: 'i' } },
+        { skills: { $in: categoryMappings[category].map(skill => new RegExp(skill, 'i')) } }
+      );
+    }
+  }
+
+  if (type) {
+    query.type = type;
+  }
+
+  if (experience) {
+    // Map experience levels to regex patterns
+    const experienceMappings = {
+      'fresher': /^0-1/,
+      'entry': /^1-3/,
+      'mid': /^3-5/,
+      'senior': /^5-8|^8-10|^10\+/,
+    };
+
+    if (experienceMappings[experience]) {
+      query.experience = { $regex: experienceMappings[experience] };
+    }
+  }
 
   const jobs = await Job.find(query)
     .populate('postedBy', 'name email role')
