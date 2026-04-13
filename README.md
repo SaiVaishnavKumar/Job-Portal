@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Job Portal (Basic Version)
 
 A full MERN stack job portal application with authentication, job posting, applications, search/filter, and responsive UI.
@@ -57,3 +58,7 @@ A full MERN stack job portal application with authentication, job posting, appli
 
 - Use MongoDB Atlas or a local `mongodb://localhost:27017/job-portal` URI.
 - The frontend calls the API using `VITE_API_URL`.
+=======
+# Job-Portal
+A full-stack MERN Job Portal application with authentication, job management, and application tracking features.
+>>>>>>> 52919f3034d46efc98b237a1a0c41925502176f3
