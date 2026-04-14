@@ -31,7 +31,8 @@ const featuredJobs = [
     location: 'Bangalore',
     salary: '₹25L - ₹45L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/google.com'
+    logo: 'https://logo.clearbit.com/google.com',
+    description: 'Lead cutting-edge projects and mentor junior engineers'
   },
   {
     title: 'Product Manager',
@@ -39,7 +40,8 @@ const featuredJobs = [
     location: 'Hyderabad',
     salary: '₹20L - ₹35L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/microsoft.com'
+    logo: 'https://logo.clearbit.com/microsoft.com',
+    description: 'Drive product strategy and innovation across teams'
   },
   {
     title: 'Frontend Developer Intern',
@@ -47,7 +49,8 @@ const featuredJobs = [
     location: 'Pune',
     salary: '₹15K - ₹25K',
     type: 'Internship',
-    logo: 'https://logo.clearbit.com/infosys.com'
+    logo: 'https://logo.clearbit.com/infosys.com',
+    description: 'Learn modern web technologies in a collaborative environment'
   },
   {
     title: 'Data Scientist',
@@ -55,7 +58,47 @@ const featuredJobs = [
     location: 'Mumbai',
     salary: '₹18L - ₹28L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/tcs.com'
+    logo: 'https://logo.clearbit.com/tcs.com',
+    description: 'Analyze complex datasets and build predictive models'
+  },
+];
+
+const platformFeatures = [
+  {
+    icon: '🎯',
+    title: 'Smart Job Matching',
+    description: 'Get personalized job recommendations based on your profile and preferences.',
+    slug: 'matching'
+  },
+  {
+    icon: '⚡',
+    title: 'Quick Apply',
+    description: 'Apply to multiple jobs with just one click using your saved profile.',
+    slug: 'quick-apply'
+  },
+  {
+    icon: '📱',
+    title: 'Mobile Friendly',
+    description: 'Access jobs and manage applications from anywhere on any device.',
+    slug: 'mobile'
+  },
+  {
+    icon: '🔔',
+    title: 'Job Alerts',
+    description: 'Get notified when new jobs matching your criteria are posted.',
+    slug: 'alerts'
+  },
+  {
+    icon: '📊',
+    title: 'Application Tracking',
+    description: 'Track all your applications and get updates on their status.',
+    slug: 'tracking'
+  },
+  {
+    icon: '🔒',
+    title: 'Secure & Private',
+    description: 'Your data is protected with enterprise-grade security measures.',
+    slug: 'security'
   },
 ];
 
@@ -67,8 +110,28 @@ const Home = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery || locationQuery) {
+    if (searchQuery.trim() || locationQuery.trim()) {
       navigate(`/jobs?search=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery)}`);
+    } else {
+      navigate('/jobs');
+    }
+  };
+
+  const handleFeaturedJobClick = (job) => {
+    navigate(`/jobs?search=${encodeURIComponent(job.title)}&location=${encodeURIComponent(job.location)}`);
+  };
+
+  const handleCompanyClick = (companyName) => {
+    navigate(`/jobs?search=${encodeURIComponent(companyName)}`);
+  };
+
+  const handleFeatureClick = (feature) => {
+    // Store the feature in session storage for reference
+    sessionStorage.setItem('selectedFeature', JSON.stringify(feature));
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      navigate('/register');
     }
   };
 
@@ -92,6 +155,7 @@ const Home = () => {
                   placeholder="Job title, keywords, or company"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  autoComplete="off"
                 />
               </div>
               <div className="search-input-group">
@@ -101,6 +165,7 @@ const Home = () => {
                   placeholder="Location"
                   value={locationQuery}
                   onChange={(e) => setLocationQuery(e.target.value)}
+                  autoComplete="off"
                 />
               </div>
               <button type="submit" className="search-btn">
@@ -172,7 +237,14 @@ const Home = () => {
           </div>
           <div className="jobs-grid">
             {featuredJobs.map((job, index) => (
-              <div key={index} className="job-card">
+              <div
+                key={index}
+                className="job-card featured-job-card"
+                onClick={() => handleFeaturedJobClick(job)}
+                role="button"
+                tabIndex="0"
+                onKeyPress={(e) => e.key === 'Enter' && handleFeaturedJobClick(job)}
+              >
                 <div className="job-header">
                   <img src={job.logo} alt={job.company} className="company-logo" />
                   <div className="job-info">
@@ -180,12 +252,25 @@ const Home = () => {
                     <p className="company">{job.company}</p>
                   </div>
                 </div>
+                <div className="job-description">
+                  <p>{job.description}</p>
+                </div>
                 <div className="job-details">
                   <span className="location">📍 {job.location}</span>
                   <span className="salary">💰 {job.salary}</span>
                   <span className="type">{job.type}</span>
                 </div>
-                <Link to="/jobs" className="apply-btn">Apply Now</Link>
+                <div className="apply-btn-wrapper">
+                  {isAuthenticated ? (
+                    <button className="apply-btn" onClick={(e) => e.stopPropagation()}>
+                      Apply Now
+                    </button>
+                  ) : (
+                    <Link to="/register" className="apply-btn" onClick={(e) => e.stopPropagation()}>
+                      Register to Apply
+                    </Link>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -198,10 +283,19 @@ const Home = () => {
           <h2>Top Companies Hiring</h2>
           <div className="companies-grid">
             {topCompanies.map((company, index) => (
-              <div key={index} className="company-card">
+              <div
+                key={index}
+                className="company-card clickable-card"
+                onClick={() => handleCompanyClick(company.name)}
+                role="button"
+                tabIndex="0"
+                onKeyPress={(e) => e.key === 'Enter' && handleCompanyClick(company.name)}
+                title={`View ${company.name} jobs`}
+              >
                 <img src={company.logo} alt={company.name} className="company-logo" />
                 <h3>{company.name}</h3>
-                <p>{company.jobs} Jobs</p>
+                <p className="jobs-count">{company.jobs} Jobs</p>
+                <div className="company-action">Browse Jobs →</div>
               </div>
             ))}
           </div>
@@ -233,36 +327,22 @@ const Home = () => {
         <div className="container">
           <h2>Why Choose Our Platform?</h2>
           <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🎯</div>
-              <h3>Smart Job Matching</h3>
-              <p>Get personalized job recommendations based on your profile and preferences.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">⚡</div>
-              <h3>Quick Apply</h3>
-              <p>Apply to multiple jobs with just one click using your saved profile.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">📱</div>
-              <h3>Mobile Friendly</h3>
-              <p>Access jobs and manage applications from anywhere on any device.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🔔</div>
-              <h3>Job Alerts</h3>
-              <p>Get notified when new jobs matching your criteria are posted.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">📊</div>
-              <h3>Application Tracking</h3>
-              <p>Track all your applications and get updates on their status.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🔒</div>
-              <h3>Secure & Private</h3>
-              <p>Your data is protected with enterprise-grade security measures.</p>
-            </div>
+            {platformFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="feature-card clickable-feature"
+                onClick={() => handleFeatureClick(feature)}
+                role="button"
+                tabIndex="0"
+                onKeyPress={(e) => e.key === 'Enter' && handleFeatureClick(feature)}
+                title="Click to learn more"
+              >
+                <div className="feature-icon">{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+                <div className="feature-action">Learn More →</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
