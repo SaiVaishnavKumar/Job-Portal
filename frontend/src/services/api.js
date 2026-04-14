@@ -21,7 +21,7 @@ const request = async (path, options = {}) => {
     return data;
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new Error('Unable to connect to the server. Please make sure the backend is running on http://localhost:5000');
+      throw new Error(`Unable to connect to the server. Please make sure the backend is running on ${API_URL}`);
     }
     throw error;
   }

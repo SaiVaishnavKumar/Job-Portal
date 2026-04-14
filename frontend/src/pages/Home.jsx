@@ -1,27 +1,76 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import googleLogo from '../assets/logos/google.svg';
+import microsoftLogo from '../assets/logos/microsoft.svg';
+import infosysLogo from '../assets/logos/infosys.svg';
+import tcsLogo from '../assets/logos/tcs.svg';
+import flipkartLogo from '../assets/logos/flipkart.svg';
+import swiggyLogo from '../assets/logos/swiggy.svg';
+import zomatoLogo from '../assets/logos/zomato.svg';
+import amazonLogo from '../assets/logos/amazon.svg';
+import fallbackLogo from '../assets/logos/fallback.svg';
 
 const topCompanies = [
-  { name: 'Google', logo: 'https://logo.clearbit.com/google.com', jobs: 245 },
-  { name: 'Microsoft', logo: 'https://logo.clearbit.com/microsoft.com', jobs: 189 },
-  { name: 'Infosys', logo: 'https://logo.clearbit.com/infosys.com', jobs: 156 },
-  { name: 'TCS', logo: 'https://logo.clearbit.com/tcs.com', jobs: 134 },
-  { name: 'Flipkart', logo: 'https://logo.clearbit.com/flipkart.com', jobs: 98 },
-  { name: 'Swiggy', logo: 'https://logo.clearbit.com/swiggy.com', jobs: 87 },
-  { name: 'Zomato', logo: 'https://logo.clearbit.com/zomato.com', jobs: 76 },
-  { name: 'Amazon', logo: 'https://logo.clearbit.com/amazon.com', jobs: 203 },
+  {
+    name: 'Google',
+    logo: googleLogo,
+    background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.35), transparent 28%), linear-gradient(160deg, #1f2937 0%, #111827 100%)',
+    jobs: 245,
+  },
+  {
+    name: 'Microsoft',
+    logo: microsoftLogo,
+    background: 'radial-gradient(circle at top right, rgba(0, 164, 239, 0.28), transparent 30%), linear-gradient(160deg, #111827 0%, #0f172a 100%)',
+    jobs: 189,
+  },
+  {
+    name: 'Infosys',
+    logo: infosysLogo,
+    background: 'radial-gradient(circle at 20% 20%, rgba(27, 122, 161, 0.24), transparent 28%), linear-gradient(160deg, #111827 0%, #0b1120 100%)',
+    jobs: 156,
+  },
+  {
+    name: 'TCS',
+    logo: tcsLogo,
+    background: 'radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 28%), linear-gradient(160deg, #111827 0%, #111827 100%)',
+    jobs: 134,
+  },
+  {
+    name: 'Flipkart',
+    logo: flipkartLogo,
+    background: 'radial-gradient(circle at 75% 20%, rgba(255, 229, 0, 0.25), transparent 28%), linear-gradient(160deg, #1f2937 0%, #111827 100%)',
+    jobs: 98,
+  },
+  {
+    name: 'Swiggy',
+    logo: swiggyLogo,
+    background: 'radial-gradient(circle at 80% 20%, rgba(251, 100, 27, 0.28), transparent 28%), linear-gradient(160deg, #111827 0%, #0f172a 100%)',
+    jobs: 87,
+  },
+  {
+    name: 'Zomato',
+    logo: zomatoLogo,
+    background: 'radial-gradient(circle at top right, rgba(234, 28, 45, 0.2), transparent 28%), linear-gradient(160deg, #111827 0%, #0b1120 100%)',
+    jobs: 76,
+  },
+  {
+    name: 'Amazon',
+    logo: amazonLogo,
+    background: 'radial-gradient(circle at top left, rgba(255, 153, 0, 0.25), transparent 28%), linear-gradient(160deg, #111827 0%, #111827 100%)',
+    jobs: 203,
+  },
 ];
 
 const jobCategories = [
-  { name: 'IT & Software', count: 1250, icon: '💻' },
-  { name: 'Marketing', count: 890, icon: '📈' },
-  { name: 'Finance', count: 675, icon: '💰' },
-  { name: 'Operations', count: 543, icon: '⚙️' },
-  { name: 'Sales', count: 432, icon: '📊' },
-  { name: 'HR', count: 321, icon: '👥' },
-  { name: 'Design', count: 298, icon: '🎨' },
-  { name: 'Content Writing', count: 234, icon: '✍️' },
+  { name: 'IT & Software', count: 1250, icon: '💻', bg: 'linear-gradient(135deg, #4f46e5, #2563eb)' },
+  { name: 'Marketing', count: 890, icon: '📈', bg: 'linear-gradient(135deg, #ea580c, #f97316)' },
+  { name: 'Finance', count: 675, icon: '💰', bg: 'linear-gradient(135deg, #047857, #10b981)' },
+  { name: 'Operations', count: 543, icon: '⚙️', bg: 'linear-gradient(135deg, #0f766e, #14b8a6)' },
+  { name: 'Sales', count: 432, icon: '📊', bg: 'linear-gradient(135deg, #9333ea, #ec4899)' },
+  { name: 'HR', count: 321, icon: '👥', bg: 'linear-gradient(135deg, #1e293b, #334155)' },
+  { name: 'Design', count: 298, icon: '🎨', bg: 'linear-gradient(135deg, #db2777, #f472b6)' },
+  { name: 'Content Writing', count: 234, icon: '✍️', bg: 'linear-gradient(135deg, #475569, #64748b)' },
 ];
 
 const featuredJobs = [
@@ -31,8 +80,9 @@ const featuredJobs = [
     location: 'Bangalore',
     salary: '₹25L - ₹45L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/google.com',
-    description: 'Lead cutting-edge projects and mentor junior engineers'
+    logo: googleLogo,
+    background: 'linear-gradient(180deg, rgba(66, 133, 244, 0.35), rgba(15, 23, 42, 0.9))',
+    description: 'Lead cutting-edge projects and mentor junior engineers.',
   },
   {
     title: 'Product Manager',
@@ -40,8 +90,9 @@ const featuredJobs = [
     location: 'Hyderabad',
     salary: '₹20L - ₹35L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/microsoft.com',
-    description: 'Drive product strategy and innovation across teams'
+    logo: microsoftLogo,
+    background: 'linear-gradient(180deg, rgba(0, 164, 239, 0.25), rgba(15, 23, 42, 0.9))',
+    description: 'Drive product strategy and innovation across cross-functional teams.',
   },
   {
     title: 'Frontend Developer Intern',
@@ -49,8 +100,9 @@ const featuredJobs = [
     location: 'Pune',
     salary: '₹15K - ₹25K',
     type: 'Internship',
-    logo: 'https://logo.clearbit.com/infosys.com',
-    description: 'Learn modern web technologies in a collaborative environment'
+    logo: infosysLogo,
+    background: 'linear-gradient(180deg, rgba(27, 122, 161, 0.28), rgba(15, 23, 42, 0.9))',
+    description: 'Learn modern web technologies while building real products.',
   },
   {
     title: 'Data Scientist',
@@ -58,8 +110,9 @@ const featuredJobs = [
     location: 'Mumbai',
     salary: '₹18L - ₹28L',
     type: 'Full-time',
-    logo: 'https://logo.clearbit.com/tcs.com',
-    description: 'Analyze complex datasets and build predictive models'
+    logo: tcsLogo,
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(15, 23, 42, 0.92))',
+    description: 'Analyze complex datasets and build predictive models for business growth.',
   },
 ];
 
@@ -244,21 +297,32 @@ const Home = () => {
                 role="button"
                 tabIndex="0"
                 onKeyPress={(e) => e.key === 'Enter' && handleFeaturedJobClick(job)}
+                style={{
+                  background: job.background,
+                }}
               >
                 <div className="job-header">
-                  <img src={job.logo} alt={job.company} className="company-logo" />
+                  <img
+                    src={job.logo}
+                    alt={job.company}
+                    className="company-logo"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = fallbackLogo;
+                    }}
+                  />
                   <div className="job-info">
                     <h3>{job.title}</h3>
                     <p className="company">{job.company}</p>
                   </div>
                 </div>
+                <div className="job-tag">{job.type}</div>
                 <div className="job-description">
                   <p>{job.description}</p>
                 </div>
                 <div className="job-details">
                   <span className="location">📍 {job.location}</span>
                   <span className="salary">💰 {job.salary}</span>
-                  <span className="type">{job.type}</span>
                 </div>
                 <div className="apply-btn-wrapper">
                   {isAuthenticated ? (
@@ -285,17 +349,32 @@ const Home = () => {
             {topCompanies.map((company, index) => (
               <div
                 key={index}
-                className="company-card clickable-card"
+                className="company-card clickable-card company-card-visual"
                 onClick={() => handleCompanyClick(company.name)}
                 role="button"
                 tabIndex="0"
                 onKeyPress={(e) => e.key === 'Enter' && handleCompanyClick(company.name)}
                 title={`View ${company.name} jobs`}
+                style={{
+                  background: company.background,
+                }}
               >
-                <img src={company.logo} alt={company.name} className="company-logo" />
-                <h3>{company.name}</h3>
-                <p className="jobs-count">{company.jobs} Jobs</p>
-                <div className="company-action">Browse Jobs →</div>
+                <div className="company-card-top">
+                  <img
+                    src={company.logo}
+                    alt={company.name}
+                    className="company-logo"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = fallbackLogo;
+                    }}
+                  />
+                  <h3>{company.name}</h3>
+                </div>
+                <div className="company-card-meta">
+                  <p className="jobs-count">{company.jobs} Jobs</p>
+                  <div className="company-action">Browse Jobs →</div>
+                </div>
               </div>
             ))}
           </div>
@@ -311,7 +390,8 @@ const Home = () => {
               <Link
                 key={index}
                 to={`/jobs?category=${encodeURIComponent(category.name)}`}
-                className="category-card"
+                className="category-card category-card-gradient"
+                style={{ background: category.bg }}
               >
                 <div className="category-icon">{category.icon}</div>
                 <h3>{category.name}</h3>
